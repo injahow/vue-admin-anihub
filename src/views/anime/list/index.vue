@@ -79,22 +79,24 @@
 
 <script>
 import { getList, deleteOne } from '@/api/anime'
+
 export default {
   data() {
     return {
       listLoading: true,
       tableData: [],
       tags_options: []
+
     }
   },
+
   mounted() {
     this.listLoading = true
     getList().then(res => {
       this.tableData = res.data
       this.listLoading = false
     })
-      .catch((error) => {
-        this.$message.error(error)
+      .catch(() => {
         this.listLoading = false
       })
   },
@@ -106,18 +108,18 @@ export default {
       })
     },
     handleDelete(index, row) {
-      const that = this
       const id = row._id
       deleteOne(id).then((res) => {
-        if (res.code === 200) {
-          that.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-          // todo 刷新页面
-        } else {
-          that.$message.error('错误:' + res.error)
-        }
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        // 刷新页面 -- 刷新对象
+        this.tableData.forEach((element, i) => {
+          if (element._id === id) {
+            this.tableData.splice(i, 1)
+          }
+        })
       })
     },
     filterHandler(value, row, column) {

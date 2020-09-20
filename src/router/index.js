@@ -72,6 +72,12 @@ export const constantRoutes = [
         meta: { title: '列表', icon: 'table' }
       },
       {
+        path: 'index',
+        component: () => import('@/views/anime/index/index'),
+        name: 'anime_index',
+        meta: { title: '引索', icon: 'table' }
+      },
+      {
         path: 'add',
         component: () => import('@/views/anime/add/index'),
         name: 'anime_add',
