@@ -1,4 +1,4 @@
-# vue-admin-template
+# vue-admin-anihub
 
 > 这是以 vue-admin 管理后台为模版设计的 AnimeHub 后台管理界面。它包含了 Element UI & axios & iconfont & permission control & lint，这些搭建后台必要的东西。
 
