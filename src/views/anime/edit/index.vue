@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form
-      ref="form"
+      ref="animeform"
       :model="animeform"
       label-width="50px"
       style="width: 100%"
