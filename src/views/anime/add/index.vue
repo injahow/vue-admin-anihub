@@ -42,6 +42,27 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="类型">
+        <el-select
+          v-model="animeform.type_name"
+          placeholder="请选择类型"
+          style="width: 100%"
+        >
+          <el-option
+            label="正片"
+            value="正片"
+          />
+          <el-option
+            label="电影"
+            value="电影"
+          />
+          <el-option
+            label="其他"
+            value="其他"
+          />
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="地区">
         <el-select
           v-model="animeform.region"

@@ -8,24 +8,24 @@
     >
       <el-form-item label="类型">
         <el-radio-group
-          v-model="form.type"
+          v-model="form.type_name"
           @change="resetData"
         >
           <el-radio-button
-            label="全部"
-            name="type"
+            v-for="type_name in options.type_name"
+            :key="type_name"
+            :label="type_name"
+            name="type_name"
           />
-          <el-radio-button
-            label="正片"
-            name="type"
+          <el-button
+            icon="el-icon-plus"
+            circle
+            @click="addOption('type_name')"
           />
-          <el-radio-button
-            label="电影"
-            name="type"
-          />
-          <el-radio-button
-            label="其他"
-            name="type"
+          <el-button
+            icon="el-icon-minus"
+            circle
+            @click="delOption('type_name')"
           />
         </el-radio-group>
       </el-form-item>
@@ -36,16 +36,20 @@
           @change="resetData"
         >
           <el-radio-button
-            label="全部"
+            v-for="region in options.region"
+            :key="region"
+            :label="region"
             name="region"
           />
-          <el-radio-button
-            label="日本"
-            name="region"
+          <el-button
+            icon="el-icon-plus"
+            circle
+            @click="addOption('region')"
           />
-          <el-radio-button
-            label="中国"
-            name="region"
+          <el-button
+            icon="el-icon-minus"
+            circle
+            @click="delOption('region')"
           />
         </el-radio-group>
       </el-form-item>
@@ -56,36 +60,44 @@
           @change="resetData"
         >
           <el-radio-button
-            label="全部"
+            v-for="publish in options.publish"
+            :key="publish"
+            :label="publish"
             name="publish"
           />
-          <el-radio-button
-            label="2000"
-            name="publish"
+          <el-button
+            icon="el-icon-plus"
+            circle
+            @click="addOption('publish')"
           />
-          <el-radio-button
-            label="2001"
-            name="publish"
+          <el-button
+            icon="el-icon-minus"
+            circle
+            @click="delOption('publish')"
           />
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="风格">
+      <el-form-item label="标签">
         <el-radio-group
           v-model="form.tags"
           @change="resetData"
         >
           <el-radio-button
-            label="全部"
+            v-for="tags in options.tags"
+            :key="tags"
+            :label="tags"
             name="tags"
           />
-          <el-radio-button
-            label="青春"
-            name="tags"
+          <el-button
+            icon="el-icon-plus"
+            circle
+            @click="addOption('tags')"
           />
-          <el-radio-button
-            label="悬疑"
-            name="tags"
+          <el-button
+            icon="el-icon-minus"
+            circle
+            @click="delOption('tags')"
           />
         </el-radio-group>
       </el-form-item>
@@ -170,15 +182,20 @@ export default {
   data() {
     return {
       form: {
-        type: '全部',
+        type_name: '全部',
         region: '全部',
         publish: '全部',
         tags: '全部'
       },
       indexData: [],
       listLoading: false,
-      tags_options: []
-
+      tags_options: [],
+      options: {
+        type_name: ['全部', '正片', '电影', '其他'],
+        region: ['全部', '日本', '中国'],
+        publish: ['全部', '2020', '2019', '2018', '2017', '2016', '2015'],
+        tags: ['全部', '青春', '科幻', '悬疑', '恐怖']
+      }
     }
   },
   mounted() {
@@ -224,6 +241,26 @@ export default {
         name: 'anime_detail',
         params: { id: val._id }
       })
+    },
+    addOption(form_name) {
+      this.$prompt('请输入自定义选择内容参数', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+        // inputPattern: //, 正则验证规则
+        // inputErrorMessage: '格式不正确'
+      }).then(({ value }) => {
+        // 添加选项
+        if (value) {
+          this.options[form_name].push(value)
+        }
+      }).catch(() => { })
+    },
+    delOption(form_name) {
+      const options = this.options[form_name]
+      // 保留第一项
+      if (options.length > 1) {
+        this.options[form_name].pop()
+      }
     }
   }
 }

@@ -70,7 +70,6 @@
       <el-table-column
         prop="publish"
         label="时间"
-        sortable
         width="90"
       />
     </el-table>
