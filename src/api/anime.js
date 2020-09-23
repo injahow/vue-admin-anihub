@@ -16,6 +16,13 @@ export function getIndex(form) {
   })
 }
 
+export function search(name) {
+  return request({
+    url: `/api/anime/search?name=${name}`,
+    method: 'get'
+  })
+}
+
 export function addOne(anime) {
   return request({
     url: '/api/anime',
