@@ -11,8 +11,8 @@ export function getList() {
 export function getIndex(form) {
   return request({
     url: '/api/anime/index',
-    method: 'get',
-    params: { form }
+    method: 'post',
+    data: form
   })
 }
 

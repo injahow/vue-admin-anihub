@@ -200,7 +200,7 @@ export default {
   },
   mounted() {
     this.listLoading = true
-    getIndex().then(res => {
+    getIndex(this.form).then(res => {
       this.indexData = res.data
       this.listLoading = false
     })
