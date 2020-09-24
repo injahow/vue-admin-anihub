@@ -59,7 +59,7 @@ export const constantRoutes = [
     path: '/anime',
     component: Layout,
     redirect: '/anime/list',
-    name: 'Anime',
+    name: 'anime',
     meta: {
       title: '动漫',
       icon: 'dashboard'
@@ -101,6 +101,37 @@ export const constantRoutes = [
         component: () => import('@/views/anime/detail/index'),
         name: 'anime_detail',
         meta: { title: '详情', icon: 'table' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/link',
+    component: Layout,
+    redirect: '/link/list',
+    name: 'link',
+    meta: {
+      title: '链接',
+      icon: 'dashboard'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/link/list/index'),
+        name: 'link_list',
+        meta: { title: '列表', icon: 'table' }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/link/add/index'),
+        name: 'link_add',
+        meta: { title: '添加', icon: 'form' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/link/edit/index'),
+        name: 'link_edit',
+        meta: { title: '编辑', icon: 'form' },
         hidden: true
       }
     ]

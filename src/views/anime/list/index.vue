@@ -64,12 +64,12 @@
           >查看</el-button>
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)"
+            @click="handleEdit(scope.row)"
           >编辑</el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
+            @click="handleDelete(scope.row)"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -101,13 +101,13 @@ export default {
       })
   },
   methods: {
-    handleEdit(index, row) {
+    handleEdit(row) {
       this.$router.push({
         name: 'anime_edit',
         params: { id: row._id }
       })
     },
-    handleDelete(index, row) {
+    handleDelete(row) {
       const id = row._id
       deleteOne(id).then((res) => {
         this.$message({

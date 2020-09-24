@@ -8,12 +8,12 @@
     >
       <el-form-item label="名称">
         <el-input v-model="animeform.name" />
-        <el-button @click="resetValue(animeform,'name')">重置</el-button>
+        <el-button @click="resetValue('name')">重置</el-button>
       </el-form-item>
 
       <el-form-item label="封面">
         <el-input v-model="animeform.cover" />
-        <el-button @click="resetValue(animeform,'cover')">重置</el-button>
+        <el-button @click="resetValue('cover')">重置</el-button>
       </el-form-item>
 
       <el-form-item label="介绍">
@@ -23,7 +23,7 @@
           autosize
           placeholder="请输入介绍"
         />
-        <el-button @click="resetValue(animeform,'introduction')">重置</el-button>
+        <el-button @click="resetValue('introduction')">重置</el-button>
       </el-form-item>
 
       <el-form-item label="标签">
@@ -43,7 +43,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-button @click="resetValue(animeform,'tags')">重置</el-button>
+        <el-button @click="resetValue('tags')">重置</el-button>
       </el-form-item>
 
       <el-form-item label="地区">
@@ -65,7 +65,7 @@
             value="其他"
           />
         </el-select>
-        <el-button @click="resetValue(animeform,'region')">重置</el-button>
+        <el-button @click="resetValue('region')">重置</el-button>
       </el-form-item>
 
       <el-form-item label="日期">
@@ -75,7 +75,7 @@
           placeholder="选择发布日期"
           style="width: 100%"
         />
-        <el-button @click="resetValue(animeform,'publish')">重置</el-button>
+        <el-button @click="resetValue('publish')">重置</el-button>
       </el-form-item>
 
       <el-form-item label="声优">
@@ -94,7 +94,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-button @click="resetValue(animeform,'actor')">重置</el-button>
+        <el-button @click="resetValue('actor')">重置</el-button>
       </el-form-item>
 
       <el-form-item label="STAFF">
@@ -114,7 +114,7 @@
             :value="item.value"
           />
         </el-select>
-        <el-button @click="resetValue(animeform,'staff')">重置</el-button>
+        <el-button @click="resetValue('staff')">重置</el-button>
       </el-form-item>
 
       <el-form-item>
@@ -153,7 +153,6 @@ export default {
   },
   methods: {
     onSubmit(formName) {
-      const that = this
       let changes = []
       // 判断修改项
       const old_anime_form = this.old_anime_form
@@ -175,27 +174,27 @@ export default {
         // console.log('changes:', changes)
         editOne(anime, changes).then((res) => {
           if (res.code === 200) {
-            that.$message('修改成功!')
+            this.$message('修改成功!')
             changes = []
             setTimeout(() => {
               this.$router.push({
                 name: 'anime_detail',
-                params: { id: that.old_anime_form._id }
+                params: { id: this.old_anime_form._id }
               })
             }, 1000)
           } else {
-            that.$message('错误: ' + res.error)
+            this.$message('错误: ' + res.error)
           }
         })
       } else {
-        that.$message('未修改内容!')
+        this.$message('未修改内容!')
       }
     },
     onClose() {
       this.$router.go(-1)
     },
-    resetValue(formName, name) {
-      formName[name] = this.old_anime_form[name]
+    resetValue(name) {
+      this.animeform[name] = this.old_anime_form[name]
     }
   }
 }

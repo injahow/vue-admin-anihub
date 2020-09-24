@@ -167,7 +167,7 @@
           >查看</el-button>
           <el-button
             size="mini"
-            @click="handleEdit(scope.$index, scope.row)"
+            @click="handleEdit(scope.row)"
           >编辑</el-button>
         </template>
       </el-table-column>
@@ -222,7 +222,7 @@ export default {
         })
     },
     // 代码冗余 - 同list .......
-    handleEdit(index, row) {
+    handleEdit(row) {
       this.$router.push({
         name: 'anime_edit',
         params: { id: row._id }
