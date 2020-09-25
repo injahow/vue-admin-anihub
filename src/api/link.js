@@ -7,6 +7,14 @@ export function getList() {
   })
 }
 
+export function getIndex(form) {
+  return request({
+    url: '/api/sublink/index',
+    method: 'post',
+    data: form
+  })
+}
+
 export function addOne(link) {
   return request({
     url: '/api/link',

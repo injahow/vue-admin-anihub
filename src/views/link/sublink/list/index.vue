@@ -1,7 +1,6 @@
 <template>
   <div class="app-container">
     <el-table v-loading="listLoading" :data="tableData" width="100%" border>
-
       <el-table-column label="图标" width="80">
         <template slot-scope="scope">
           <el-image
@@ -11,15 +10,12 @@
           />
         </template>
       </el-table-column>
-
       <el-table-column prop="domain" label="域名" width="160" sortable>
         <template slot-scope="scope">
           <a :href="scope.row.domain" target="_blank">{{ scope.row.domain }}</a>
         </template>
       </el-table-column>
-
       <el-table-column prop="type_name" label="类型" width="140" sortable />
-
       <el-table-column
         prop="tags"
         label="标签"
@@ -28,16 +24,12 @@
         :filter-method="filterHandler"
       >
         <template slot-scope="scope">
-          <el-tag
-            v-for="tag in scope.row.tags"
-            :key="tag"
-            effect="plain"
-          >{{ tag }}</el-tag>
+          <el-tag v-for="tag in scope.row.tags" :key="tag" effect="plain">{{
+            tag
+          }}</el-tag>
         </template>
       </el-table-column>
-
       <el-table-column prop="region" label="地区" width="90" sortable />
-
       <el-table-column prop="add_date" label="添加时间" sortable width="110" />
 
       <el-table-column label="操作" width="270">
@@ -49,7 +41,6 @@
           <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
-
     </el-table>
   </div>
 </template>
@@ -62,7 +53,7 @@ export default {
     return {
       listLoading: true,
       tableData: [],
-      tags_options: ['其他']
+      tags_options: []
     }
   },
 

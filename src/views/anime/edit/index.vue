@@ -38,9 +38,9 @@
         >
           <el-option
             v-for="item in tags_options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item"
+            :label="item"
+            :value="item"
           />
         </el-select>
         <el-button @click="resetValue('tags')">重置</el-button>
@@ -53,16 +53,10 @@
           style="width: 100%"
         >
           <el-option
-            label="日本"
-            value="日本"
-          />
-          <el-option
-            label="中国"
-            value="中国"
-          />
-          <el-option
-            label="其他"
-            value="其他"
+            v-for="item in region_options"
+            :key="item"
+            :label="item"
+            :value="item"
           />
         </el-select>
         <el-button @click="resetValue('region')">重置</el-button>
@@ -135,9 +129,10 @@ export default {
     return {
       old_anime_form: {},
       animeform: {},
-      actor_options: [],
-      staff_options: [],
-      tags_options: []
+      actor_options: ['未知'],
+      staff_options: ['未知'],
+      tags_options: ['其他'],
+      region_options: ['中国', '日本', '美国']
     }
   },
   mounted() {
@@ -168,23 +163,17 @@ export default {
           }
         }
       }
-      // console.log(this.old_anime_form)
       if (changes.length > 0) {
         const anime = formName
-        // console.log('changes:', changes)
         editOne(anime, changes).then((res) => {
-          if (res.code === 200) {
-            this.$message('修改成功!')
-            changes = []
-            setTimeout(() => {
-              this.$router.push({
-                name: 'anime_detail',
-                params: { id: this.old_anime_form._id }
-              })
-            }, 1000)
-          } else {
-            this.$message('错误: ' + res.error)
-          }
+          this.$message('修改成功!')
+          changes = []
+          setTimeout(() => {
+            this.$router.push({
+              name: 'anime_detail',
+              params: { id: this.old_anime_form._id }
+            })
+          }, 1000)
         })
       } else {
         this.$message('未修改内容!')

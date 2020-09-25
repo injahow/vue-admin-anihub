@@ -35,7 +35,7 @@
         <template slot-scope="scope">
           <el-tag
             v-for="tag in scope.row.tags"
-            :key="tag.name"
+            :key="tag"
             effect="plain"
           >{{ tag }}</el-tag>
         </template>

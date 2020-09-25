@@ -16,10 +16,12 @@
           placeholder="请选择类型"
           style="width: 100%"
         >
-          <el-option label="休闲娱乐" value="休闲娱乐" />
-          <el-option label="论坛社区" value="论坛社区" />
-          <el-option label="科技工具" value="科技工具" />
-          <el-option label="服务托管" value="服务托管" />
+          <el-option
+            v-for="item in link_type_name"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
 
@@ -35,9 +37,9 @@
         >
           <el-option
             v-for="item in tags_options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item"
+            :label="item"
+            :value="item"
           />
         </el-select>
       </el-form-item>
@@ -48,9 +50,12 @@
           placeholder="请选择地区"
           style="width: 100%"
         >
-          <el-option label="中国" value="中国" />
-          <el-option label="美国" value="美国" />
-          <el-option label="其他" value="其他" />
+          <el-option
+            v-for="item in region_options"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
 
@@ -68,9 +73,11 @@ export default {
   data() {
     return {
       linkform: {},
-      actor_options: [],
-      staff_options: [],
-      tags_options: []
+      actor_options: ['未知'],
+      staff_options: ['未知'],
+      tags_options: ['其他'],
+      link_type_name: ['休闲娱乐', '论坛社区', '科技工具', '服务托管'],
+      region_options: ['中国', '日本', '美国']
     }
   },
   mounted() {

@@ -112,7 +112,7 @@ export const constantRoutes = [
     name: 'link',
     meta: {
       title: '链接',
-      icon: 'dashboard'
+      icon: 'el-icon-link'
     },
     children: [
       {
@@ -120,6 +120,26 @@ export const constantRoutes = [
         component: () => import('@/views/link/list/index'),
         name: 'link_list',
         meta: { title: '列表', icon: 'table' }
+      },
+      {
+        path: 'sublink',
+        component: () => import('@/views/link/sublink/index'), // Parent router-view
+        name: 'link_sublink',
+        meta: { title: '子链', icon: 'el-icon-link' },
+        children: [
+          {
+            path: 'list',
+            component: () => import('@/views/link/sublink/list/index'),
+            name: 'link_sublink_list',
+            meta: { title: '列表', icon: 'table' }
+          },
+          {
+            path: 'index',
+            component: () => import('@/views/link/sublink/index/index'),
+            name: 'link_sublink_index',
+            meta: { title: '引索', icon: 'form' }
+          }
+        ]
       },
       {
         path: 'add',
@@ -138,12 +158,17 @@ export const constantRoutes = [
   },
 
   {
-    path: 'external-link',
+    path: 'link',
     component: Layout,
+    meta: { title: '关于', icon: 'link' },
     children: [
       {
         path: 'https://injahow.com',
-        meta: { title: '关于', icon: 'link' }
+        meta: { title: '博客', icon: 'link' }
+      },
+      {
+        path: 'https://github.com/injahow',
+        meta: { title: 'GitHub', icon: 'link' }
       }
     ]
   },
