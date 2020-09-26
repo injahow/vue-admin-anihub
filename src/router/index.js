@@ -153,6 +153,13 @@ export const constantRoutes = [
         name: 'link_edit',
         meta: { title: '编辑', icon: 'form' },
         hidden: true
+      },
+      {
+        path: 'detail/:id',
+        component: () => import('@/views/link/detail/index'),
+        name: 'link_detail',
+        meta: { title: '详情', icon: 'table' },
+        hidden: true
       }
     ]
   },

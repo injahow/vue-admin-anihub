@@ -1,29 +1,28 @@
 <template>
-  <el-table
-    v-loading="listLoading"
-    :data="tableData"
-    width="100%"
-    border
-  >
-    <el-table-column
-      label="封面"
-      width="130"
-    >
+  <el-table v-loading="listLoading" :data="tableData" width="100%" border>
+
+    <el-table-column label="图标" width="80">
       <template slot-scope="scope">
         <el-image
-          :src="scope.row.cover"
+          :src="scope.row.favicon"
           alt
-          style="width:100px;height:130px;"
-          fit="fit"
+          style="width: 50px; height: 50px"
         />
       </template>
     </el-table-column>
-    <el-table-column
-      prop="name"
-      label="名称"
-      width="140"
-      sortable
-    />
+
+    <el-table-column prop="domain" label="域名" width="160" sortable>
+      <template slot-scope="scope">
+        <el-link
+          :href="scope.row.domain"
+          type="primary"
+          target="_blank"
+        >{{ scope.row.domain }}</el-link>
+      </template>
+    </el-table-column>
+
+    <el-table-column prop="type_name" label="类型" width="140" sortable />
+
     <el-table-column
       prop="tags"
       label="标签"
@@ -39,40 +38,27 @@
         >{{ tag }}</el-tag>
       </template>
     </el-table-column>
-    <el-table-column
-      prop="region"
-      label="地区"
-      width="90"
-      sortable
-    />
-    <el-table-column
-      prop="publish"
-      label="时间"
-      sortable
-      width="90"
-    />
 
-    <el-table-column
-      label="操作"
-      width="150"
-    >
+    <el-table-column prop="region" label="地区" width="90" sortable />
+
+    <el-table-column prop="add_date" label="添加时间" sortable width="110" />
+
+    <el-table-column label="操作" width="270">
       <template slot-scope="scope">
         <el-button
           size="mini"
           @click="handleClick(scope.row)"
         >查看</el-button>
-        <el-button
-          size="mini"
-          @click="handleEdit(scope.row)"
-        >编辑</el-button>
+        <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
       </template>
     </el-table-column>
+
   </el-table>
 </template>
 
 <script>
 export default {
-  name: 'AnimeTable',
+  name: 'LinkTable',
   props: {
     listLoading: {
       type: Boolean,
@@ -94,7 +80,7 @@ export default {
   methods: {
     handleEdit(row) {
       this.$router.push({
-        name: 'anime_edit',
+        name: 'link_edit',
         params: { id: row._id }
       })
     },
@@ -108,7 +94,7 @@ export default {
     },
     handleClick(val) {
       this.$router.push({
-        name: 'anime_detail',
+        name: 'link_detail',
         params: { id: val._id }
       })
     }

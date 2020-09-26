@@ -2,38 +2,38 @@ import request from '@/utils/request'
 
 export function getList() {
   return request({
-    url: '/api/link',
+    url: '/api/sublink',
     method: 'get'
   })
 }
 
 export function getIndex(form) {
   return request({
-    url: '/api/link/index',
+    url: '/api/sublink/index',
     method: 'post',
     data: form
   })
 }
 
-export function addOne(link) {
+export function addOne(sublink) {
   return request({
-    url: '/api/link',
+    url: '/api/sublink',
     method: 'post',
-    data: link
+    data: sublink
   })
 }
 
 export function getDetail(id) {
   return request({
-    url: `/api/link/${id}`,
+    url: `/api/sublink/${id}`,
     method: 'get'
   })
 }
 
-export function editOne(link, changes) {
+export function editOne(sublink, changes) {
   return request({
-    url: `/api/link/${link._id}`,
+    url: `/api/sublink/${sublink._id}`,
     method: 'put',
-    data: { link, changes }
+    data: { sublink, changes }
   })
 }

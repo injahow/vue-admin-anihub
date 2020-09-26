@@ -36,14 +36,14 @@
 
       <el-form-item label="时间">
         <el-radio-group
-          v-model="form.publish"
+          v-model="form.add_date"
           @change="resetData"
         >
           <el-radio-button
-            v-for="publish in options.publish"
-            :key="publish"
-            :label="publish"
-            name="publish"
+            v-for="add_date in options.add_date"
+            :key="add_date"
+            :label="add_date"
+            name="add_date"
           />
         </el-radio-group>
       </el-form-item>
@@ -110,7 +110,7 @@
         sortable
       />
       <el-table-column
-        prop="publish"
+        prop="add_date"
         label="时间"
         sortable
         width="90"
@@ -144,16 +144,16 @@ export default {
       form: {
         type_name: '全部',
         region: '全部',
-        publish: '全部',
+        add_date: '全部',
         tags: '全部'
       },
       indexData: [],
       listLoading: false,
       tags_options: [],
       options: {
-        type_name: ['全部', '休闲娱乐', '其他'],
-        region: ['全部', '中国', '其他'],
-        publish: ['全部', '2020'],
+        type_name: ['全部', '休闲娱乐', '论坛社区', '科技工具', '服务托管'],
+        region: ['全部', '中国', '美国', '日本', '其他'],
+        add_date: ['全部', '2020'],
         tags: ['全部', '青春', '其他']
       }
     }
@@ -180,26 +180,6 @@ export default {
         .catch(() => {
           this.listLoading = false
         })
-    },
-    handleEdit(row) {
-      this.$router.push({
-        name: 'anime_edit',
-        params: { id: row._id }
-      })
-    },
-    filterHandler(value, row, column) {
-      const property = column['property']
-      if (row[property]) {
-        return row[property].indexOf(value) > -1
-      } else {
-        return false
-      }
-    },
-    handleClick(val) {
-      this.$router.push({
-        name: 'anime_detail',
-        params: { id: val._id }
-      })
     }
   }
 }

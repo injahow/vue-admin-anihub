@@ -3,7 +3,6 @@
     <AnimeTable
       :list-loading="listLoading"
       :table-data="tableData"
-      :tags-options="tags_options"
       :tags-filters="tags_filters"
     />
   </div>
