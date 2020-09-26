@@ -49,7 +49,7 @@
         prop="tags"
         label="标签"
         width="140"
-        :filters="tags_options"
+        :filters="tags_filters"
         :filter-method="filterHandler"
       >
         <template slot-scope="scope">
@@ -101,8 +101,19 @@ export default {
       name: '',
       tableData: [],
       listLoading: false,
-      tags_options: []
+      tags_options: ['其他'],
+      tags_filters: []
     }
+  },
+  mounted() {
+    // todo request tags_options
+    this.tags_filters = []
+    this.tags_options.forEach((i) => {
+      this.tags_filters.push({
+        'text': i,
+        'value': i
+      })
+    })
   },
   methods: {
     searchForm() {

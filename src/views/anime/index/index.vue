@@ -102,83 +102,24 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-
-    <el-table
-      v-loading="listLoading"
-      :data="indexData"
-      width="100%"
-      border
-    >
-      <el-table-column
-        label="封面"
-        width="130"
-      >
-        <template slot-scope="scope">
-          <el-image
-            :src="scope.row.cover"
-            alt
-            style="width:100px;height:130px;"
-            fit="fit"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="名称"
-        width="140"
-        sortable
-      />
-      <el-table-column
-        prop="tags"
-        label="标签"
-        width="140"
-        :filters="tags_options"
-        :filter-method="filterHandler"
-      >
-        <template slot-scope="scope">
-          <el-tag
-            v-for="tag in scope.row.tags"
-            :key="tag.name"
-            effect="plain"
-          >{{ tag }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="region"
-        label="地区"
-        width="90"
-        sortable
-      />
-      <el-table-column
-        prop="publish"
-        label="时间"
-        sortable
-        width="90"
-      />
-
-      <el-table-column
-        label="操作"
-        width="270"
-      >
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            @click="handleClick(scope.row)"
-          >查看</el-button>
-          <el-button
-            size="mini"
-            @click="handleEdit(scope.row)"
-          >编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <AnimeTable
+      :list-loading="listLoading"
+      :table-data="indexData"
+      :tags-options="tags_options"
+      :tags-filters="tags_filters"
+    />
   </div>
 </template>
 
 <script>
+import AnimeTable from '@/views/anime/components/AnimeTable'
 import { getIndex } from '@/api/anime'
 
 export default {
+  name: 'AnimeIndex',
+  components: {
+    AnimeTable
+  },
   data() {
     return {
       form: {
@@ -189,7 +130,7 @@ export default {
       },
       indexData: [],
       listLoading: false,
-      tags_options: [],
+      tags_options: ['其他'],
       options: {
         type_name: ['全部', '正片', '电影', '其他'],
         region: ['全部', '日本', '中国'],
@@ -199,23 +140,25 @@ export default {
     }
   },
   mounted() {
-    this.listLoading = true
-    getIndex(this.form).then(res => {
-      this.indexData = res.data
-      this.listLoading = false
-    })
-      .catch(() => {
-        this.listLoading = false
+    this.resetData()
+    // todo request tags_options
+    this.tags_filters = []
+    this.tags_options.forEach((i) => {
+      this.tags_filters.push({
+        'text': i,
+        'value': i
       })
+    })
   },
   methods: {
     resetData() {
       this.indexData = []
       this.listLoading = true
-      getIndex(this.form).then(res => {
-        this.indexData = res.data
-        this.listLoading = false
-      })
+      getIndex(this.form)
+        .then(res => {
+          this.indexData = res.data
+          this.listLoading = false
+        })
         .catch(() => {
           this.listLoading = false
         })
@@ -242,10 +185,10 @@ export default {
       })
     },
     addOption(form_name) {
-      this.$prompt('请输入自定义选项内容', '提示', {
+      this.$prompt('请输入选项内容', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
-        // inputPattern: //, 正则验证规则
+        // inputPattern: / /, // 正则验证规则
         // inputErrorMessage: '格式不正确'
       }).then(({ value }) => {
         // 添加选项

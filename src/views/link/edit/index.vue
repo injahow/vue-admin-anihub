@@ -89,9 +89,6 @@ export default {
         this.old_link_form = res.data
         this.linkform = Object.assign({}, this.old_link_form)
       })
-      .catch((error) => {
-        this.$message.error(error)
-      })
   },
   methods: {
     onSubmit(formName) {

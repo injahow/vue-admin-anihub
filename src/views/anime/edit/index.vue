@@ -1,138 +1,69 @@
 <template>
   <div class="app-container">
-    <el-form
-      ref="animeform"
-      :model="animeform"
-      label-width="50px"
-      style="width: 100%"
-    >
-      <el-form-item label="名称">
-        <el-input v-model="animeform.name" />
-        <el-button @click="resetValue('name')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item label="封面">
-        <el-input v-model="animeform.cover" />
-        <el-button @click="resetValue('cover')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item label="介绍">
-        <el-input
-          v-model="animeform.introduction"
-          type="textarea"
-          autosize
-          placeholder="请输入介绍"
-        />
-        <el-button @click="resetValue('introduction')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item label="标签">
-        <el-select
-          v-model="animeform.tags"
-          multiple
-          filterable
-          allow-create
-          default-first-option
-          style="width: 100%"
-          placeholder="请选择标签"
-        >
-          <el-option
-            v-for="item in tags_options"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-        <el-button @click="resetValue('tags')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item label="地区">
-        <el-select
-          v-model="animeform.region"
-          placeholder="请选择地区"
-          style="width: 100%"
-        >
-          <el-option
-            v-for="item in region_options"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-        <el-button @click="resetValue('region')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item label="日期">
-        <el-date-picker
-          v-model="animeform.publish"
-          type="month"
-          placeholder="选择发布日期"
-          style="width: 100%"
-        />
-        <el-button @click="resetValue('publish')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item label="声优">
-        <el-select
-          v-model="animeform.actor"
-          filterable
-          allow-create
-          multiple
-          placeholder="请选择"
-          style="width: 100%"
-        >
-          <el-option
-            v-for="item in actor_options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-button @click="resetValue('actor')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item label="STAFF">
-        <el-select
-          v-model="animeform.staff"
-          filterable
-          allow-create
-          default-first-option
-          multiple
-          style="width: 100%"
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in staff_options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
-        </el-select>
-        <el-button @click="resetValue('staff')">重置</el-button>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button
-          type="primary"
-          @click="onSubmit(animeform)"
-        >提交</el-button>
-        <el-button @click="onClose()">取消</el-button>
-      </el-form-item>
-    </el-form>
+    <AnimeForm
+      :anime-form="anime_form"
+      :actor-options="actor_options"
+      :staff-options="staff_options"
+      :tags-options="tags_options"
+      :type-name-options="type_name_options"
+      :region-options="region_options"
+      :on-submit="onSubmit"
+      :reset-value="resetValue"
+      reset-button-show
+    />
   </div>
 </template>
 
 <script>
+import AnimeForm from '@/views/anime/components/AnimeForm'
 import { getDetail, editOne } from '@/api/anime'
+
 export default {
+  name: 'AnimeEdit',
+  components: {
+    AnimeForm
+  },
   data() {
     return {
       old_anime_form: {},
-      animeform: {},
+      anime_form: {},
       actor_options: ['未知'],
       staff_options: ['未知'],
       tags_options: ['其他'],
-      region_options: ['中国', '日本', '美国']
+      region_options: ['中国', '日本', '美国'],
+      type_name_options: ['正片', '电影', '其他'],
+      onSubmit: (formName) => {
+        let changes = []
+        // 判断修改项
+        const old_anime_form = this.old_anime_form
+        for (const i in old_anime_form) {
+        // 注意引用类型 object !
+          if (typeof formName[i] === 'object') {
+            if (formName[i].toString() !== old_anime_form[i].toString()) {
+              changes.push(i)
+            }
+          } else {
+            if (formName[i] !== old_anime_form[i]) {
+              changes.push(i)
+            }
+          }
+        }
+        if (changes.length > 0) {
+          const anime = formName
+          editOne(anime, changes).then((res) => {
+            this.$message('修改成功!')
+            changes = []
+            setTimeout(() => {
+              this.$router.push({
+                name: 'anime_detail',
+                params: { id: this.old_anime_form._id }
+              })
+            }, 1000)
+          })
+        } else {
+          this.$message('未修改内容!')
+        }
+      }
     }
   },
   mounted() {
@@ -140,50 +71,15 @@ export default {
     getDetail(id)
       .then((res) => {
         this.old_anime_form = res.data
-        this.animeform = Object.assign({}, this.old_anime_form)
+        this.anime_form = Object.assign({}, this.old_anime_form)
       })
       .catch((error) => {
         this.$message.error(error)
       })
   },
   methods: {
-    onSubmit(formName) {
-      let changes = []
-      // 判断修改项
-      const old_anime_form = this.old_anime_form
-      for (const i in old_anime_form) {
-        // 注意引用类型 object !
-        if (typeof formName[i] === 'object') {
-          if (formName[i].toString() !== old_anime_form[i].toString()) {
-            changes.push(i)
-          }
-        } else {
-          if (formName[i] !== old_anime_form[i]) {
-            changes.push(i)
-          }
-        }
-      }
-      if (changes.length > 0) {
-        const anime = formName
-        editOne(anime, changes).then((res) => {
-          this.$message('修改成功!')
-          changes = []
-          setTimeout(() => {
-            this.$router.push({
-              name: 'anime_detail',
-              params: { id: this.old_anime_form._id }
-            })
-          }, 1000)
-        })
-      } else {
-        this.$message('未修改内容!')
-      }
-    },
-    onClose() {
-      this.$router.go(-1)
-    },
     resetValue(name) {
-      this.animeform[name] = this.old_anime_form[name]
+      this.anime_form[name] = this.old_anime_form[name]
     }
   }
 }

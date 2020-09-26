@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import Url from 'url'
+import url from 'url'
 
 export function getList() {
   return request({
@@ -31,11 +31,11 @@ export function addOne(anime) {
   })
 }
 
-export function addOneByUrl(url) {
-  // host may be wrong !!!
-  const host = Url.parse(url).host.split('.').reverse()[1]
+export function addOneByUrl(_url) {
+  // hostname may be wrong !!!
+  const hostname = url.parse(_url).hostname.split('.').reverse()[1]
   return request({
-    url: `/${host}/anime`,
+    url: `/${hostname}/anime`,
     method: 'get',
     params: { url }
   })

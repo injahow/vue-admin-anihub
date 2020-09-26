@@ -23,14 +23,6 @@ export function addOne(link) {
   })
 }
 
-export function addOneByUrl(url) {
-  return request({
-    url: '/api/link',
-    method: 'get',
-    params: { url }
-  })
-}
-
 export function getDetail(id) {
   return request({
     url: `/api/link/${id}`,
