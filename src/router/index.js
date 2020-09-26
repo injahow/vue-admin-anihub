@@ -138,6 +138,12 @@ export const constantRoutes = [
             component: () => import('@/views/link/sublink/index/index'),
             name: 'link_sublink_index',
             meta: { title: '引索', icon: 'form' }
+          },
+          {
+            path: 'add',
+            component: () => import('@/views/link/sublink/add/index'),
+            name: 'link_sublink_add',
+            meta: { title: '添加', icon: 'form' }
           }
         ]
       },
