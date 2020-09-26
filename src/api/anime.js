@@ -37,7 +37,7 @@ export function addOneByUrl(_url) {
   return request({
     url: `/${hostname}/anime`,
     method: 'get',
-    params: { url }
+    params: { url: _url }
   })
 }
 
