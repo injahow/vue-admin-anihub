@@ -47,8 +47,9 @@ service.interceptors.response.use(
 
     // if the custom code is not 200, it is judged as an error.
     if (res.code !== 200) {
+      const error_message = res.error || res.message || 'Unknown Error'
       Message({
-        message: res.message || 'Error',
+        message: error_message,
         type: 'error',
         duration: 5 * 1000
       })
@@ -66,13 +67,13 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(error_message))
     } else {
       return res
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    // console.log(error) // for debug
     Message({
       message: error.message,
       type: 'error',
