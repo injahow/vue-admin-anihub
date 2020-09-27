@@ -73,9 +73,11 @@ service.interceptors.response.use(
     }
   },
   error => {
-    // console.log(error) // for debug
+    // console.dir(error)
+    const res = error.response.data
+    const error_message = res.error || res.message || 'Unknown Error'
     Message({
-      message: error.message,
+      message: error_message,
       type: 'error',
       duration: 5 * 1000
     })
