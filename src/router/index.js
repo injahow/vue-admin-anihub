@@ -54,7 +54,30 @@ export const constantRoutes = [
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
-
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/user/profile',
+    name: 'user',
+    meta: {
+      title: '用户',
+      icon: 'dashboard'
+    },
+    children: [
+      {
+        path: 'admin',
+        component: () => import('@/views/user/admin/index'),
+        name: 'user_admin',
+        meta: { title: '主页', icon: 'dashboard' }
+      },
+      {
+        path: 'profile',
+        component: () => import('@/views/user/profile/index'),
+        name: 'user_profile',
+        meta: { title: '配置', icon: 'dashboard' }
+      }
+    ]
+  },
   {
     path: '/anime',
     component: Layout,

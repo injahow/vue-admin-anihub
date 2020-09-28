@@ -17,6 +17,7 @@
 <script>
 import AnimeForm from '@/views/anime/components/AnimeForm'
 import { getDetail, editOne } from '@/api/anime'
+import { compareFrom } from '@/utils/put-changes'
 
 export default {
   name: 'AnimeEdit',
@@ -33,22 +34,10 @@ export default {
       region_options: ['中国', '日本', '美国'],
       type_name_options: ['正片', '电影', '其他'],
       onSubmit: (formName) => {
-        let changes = []
         // 判断修改项
-        const old_anime_form = this.old_anime_form
-        for (const i in old_anime_form) {
-        // 注意引用类型 object !
-          if (typeof formName[i] === 'object') {
-            if (formName[i].toString() !== old_anime_form[i].toString()) {
-              changes.push(i)
-            }
-          } else {
-            if (formName[i] !== old_anime_form[i]) {
-              changes.push(i)
-            }
-          }
-        }
-        if (changes.length > 0) {
+        const res = compareFrom(formName, this.old_anime_form)
+        let changes = res.changes
+        if (res.is_changed) {
           const anime = formName
           editOne(anime, changes).then((res) => {
             this.$message('修改成功!')

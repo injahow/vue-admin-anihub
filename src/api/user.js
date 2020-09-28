@@ -16,6 +16,13 @@ export function getInfo(token) {
   })
 }
 
+export function getOptions(name) {
+  return request({
+    url: '/api/user/options',
+    method: 'get',
+    params: { name }
+  })
+}
 export function logout() {
   return request({
     url: '/api/user/logout',

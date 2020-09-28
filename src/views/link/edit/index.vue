@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <LinkForm
-      :link-form="linkform"
+      :link-form="link_form"
       :link-type-name="link_type_name"
       :tags-options="tags_options"
       :region-options="region_options"
@@ -26,11 +26,10 @@ export default {
   data() {
     return {
       old_link_form: {},
-      linkform: {},
+      link_form: {},
       link_type_name: ['休闲娱乐', '论坛社区', '科技工具', '服务托管'],
       tags_options: ['其他'],
-      region_options: ['中国', '美国', '日本', '其他'],
-      resetButtonShow: true
+      region_options: ['中国', '美国', '日本', '其他']
     }
   },
   mounted() {
@@ -38,7 +37,7 @@ export default {
     getDetail(id)
       .then(res => {
         this.old_link_form = res.data
-        this.linkform = Object.assign({}, this.old_link_form)
+        this.link_form = Object.assign({}, this.old_link_form)
       })
   },
   methods: {
@@ -76,7 +75,7 @@ export default {
       }
     },
     resetValue(name) {
-      this.linkform[name] = this.old_link_form[name]
+      this.link_form[name] = this.old_link_form[name]
     }
   }
 }
