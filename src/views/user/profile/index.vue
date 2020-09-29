@@ -1,14 +1,17 @@
 <template>
   <div class="app-container">
+    <!--注意：此处有3重for渲染-->
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="用户选项" name="first"> 用户选项 </el-tab-pane>
-      <el-tab-pane label="动漫选项" name="second">
-
-        <el-form ref="animeOptionForm" :model="animeOptionForm" :rules="rules" label-width="80px">
-
-          <el-form-item v-for="item in optionForm" :key="item.message" :label="optionLabel[item]" prop="item">
+      <el-tab-pane
+        v-for="i in tabName"
+        :key="i"
+        :label="tabLabel[i]"
+        :name="i"
+      >
+        <el-form :ref="formData[i]" :model="formData[i]" :rules="rules" label-width="80px">
+          <el-form-item v-for="j in optionForm[i]" :key="j" :label="optionLabel[j]" :prop="j">
             <el-select
-              v-model="animeOptionForm[item]"
+              v-model="formData[i][j]"
               multiple
               filterable
               allow-create
@@ -17,55 +20,67 @@
               placeholder="请添加选项"
             >
               <el-option
-                v-for="option in animeOptionForm[item]"
-                :key="option"
-                :label="option"
-                :value="option"
+                v-for="k in formData[i][j]"
+                :key="k"
+                :label="k"
+                :value="k"
               />
             </el-select>
           </el-form-item>
-
           <el-form-item>
-            <el-button type="primary" @click="submitForm('animeOptionForm')">保存</el-button>
-            <el-button @click="resetForm('animeOptionForm')">重置</el-button>
+            <el-button type="primary" @click="submitForm('formData[i]')">保存</el-button>
+            <el-button @click="resetForm('formData[i]')">重置</el-button>
           </el-form-item>
-
         </el-form>
       </el-tab-pane>
-
-      <el-tab-pane label="链接选项" name="third">
-        链接选项
-      </el-tab-pane>
-
-      <el-tab-pane label="其他" name="fourth">
-        其他
-      </el-tab-pane>
-
     </el-tabs>
-
   </div>
 </template>
 <script>
-import { getAnimeOptions } from '@/api/user'
-import { compareFrom } from '@/utils/put-changes'
+import { getOptions } from '@/api/user'
 
 export default {
   data() {
     return {
-      activeName: 'first',
-      optionForm: ['type_name', 'tags', 'actor', 'staff'],
-      optionLabel: {
+      tabName: ['user', 'anime', 'link', 'other'], // i-1
+      tabLabel: { // i-2
+        'user': '用户',
+        'anime': '动漫',
+        'link': '链接',
+        'other': '其他'
+      },
+      activeName: 'user', // i-3
+      optionForm: { // j-1
+        'user': ['no_name'],
+        'anime': ['type_name', 'tags', 'actor', 'staff'],
+        'link': ['type_name', 'tags'],
+        'other': ['no_name']
+      },
+      optionLabel: { // j-2 可补充
         'type_name': '类型选项',
         'tags': '标签选项',
-        'actor': 'actor选项',
-        'staff': 'staff选项'
+        'actor': 'Actor选项',
+        'staff': 'Staff选项',
+        'no_name': '无名'
       },
-      oldOptionForm: {},
-      animeOptionForm: {
-        type_name: [],
-        tags: [],
-        actor: [],
-        staff: []
+      oldFormData: {},
+      formData: {
+        user: {
+          no_name: []
+        },
+        anime: {
+          type_name: [],
+          tags: [],
+          actor: [],
+          staff: []
+        },
+        link: {
+          type_name: [],
+          tags: []
+        },
+        other: {
+          no_name: []
+        }
       },
       is_changed: false,
       rules: {
@@ -109,19 +124,17 @@ export default {
       this.$refs[formName].resetFields()
     },
     handleClick(event) {
-      console.log(event)
-      getAnimeOptions().then((res) => {
-        this.animeOptionForm = res.data
-        this.oldOptionForm = Object.assign({}, this.animeOptionForm)
-      })
-      const res = compareFrom(this.animeOptionForm, this.oldOptionForm)
-
-      if (res.is_changed) {
-        // put res.changes
+      // 注意name规范化
+      const name = event.name
+      if (this.oldFormData[name]) {
+        this.formData[name] = Object.assign({}, this.oldFormData[name])
+        return
       }
-      // !if
-      // 修改过判断?
-      /*
+      getOptions(name).then((res) => {
+        this.formData[name] = res.data
+        this.oldFormData[name] = res.data
+      })
+
       const old_form = this.oldOptionForm
       if (!old_form) {
         return
@@ -141,6 +154,7 @@ export default {
           }
         }
       }
+
       // 2.无-跳转-get_Options
       if (this.is_changed) {
         this.$message({
@@ -148,8 +162,8 @@ export default {
           message: '修改未保存!'
         })
       } else {
-
-      }*/
+        // todo
+      }
     }
   }
 }
