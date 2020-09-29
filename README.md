@@ -2,7 +2,7 @@
 
 English | [简体中文](./README-zh.md)
 
-> A vue admin for AnimeHub with Element UI & axios & iconfont & permission control & lint
+> A vue admin for AniHub with Element UI & axios & iconfont & permission control & lint
 
 **Live demo:** <http://anihub.injahow.cn>
 
