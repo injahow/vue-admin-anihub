@@ -4,12 +4,12 @@
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane
         v-for="i in tabName"
-        :key="i"
+        :key="'tab_'+i"
         :label="tabLabel[i]"
         :name="i"
       >
         <el-form :ref="formData[i]" :model="formData[i]" :rules="rules" label-width="80px">
-          <el-form-item v-for="j in optionForm[i]" :key="j" :label="optionLabel[j]" :prop="j">
+          <el-form-item v-for="j in optionForm[i]" :key="'form_'+j" :label="optionLabel[j]" :prop="j">
             <el-select
               v-model="formData[i][j]"
               multiple
@@ -21,7 +21,7 @@
             >
               <el-option
                 v-for="k in formData[i][j]"
-                :key="k"
+                :key="'option_'+j+'_'+k"
                 :label="k"
                 :value="k"
               />
@@ -42,7 +42,12 @@ import { getOptions } from '@/api/user'
 export default {
   data() {
     return {
-      tabName: ['user', 'anime', 'link', 'other'], // i-1
+      tabName: [ // i-1
+        'user',
+        'anime',
+        'link',
+        'other'
+      ],
       tabLabel: { // i-2
         'user': '用户',
         'anime': '动漫',
@@ -51,10 +56,22 @@ export default {
       },
       activeName: 'user', // i-3
       optionForm: { // j-1
-        'user': ['no_name'],
-        'anime': ['type_name', 'tags', 'actor', 'staff'],
-        'link': ['type_name', 'tags'],
-        'other': ['no_name']
+        'user': [
+          'no_name'
+        ],
+        'anime': [
+          'type_name',
+          'tags',
+          'actor',
+          'staff'
+        ],
+        'link': [
+          'type_name',
+          'tags'
+        ],
+        'other': [
+          'no_name'
+        ]
       },
       optionLabel: { // j-2 可补充
         'type_name': '类型选项',
@@ -64,22 +81,22 @@ export default {
         'no_name': '无名'
       },
       oldFormData: {},
-      formData: {
+      formData: { // i-j-k
         user: {
-          no_name: []
+          no_name: ['占位']
         },
         anime: {
-          type_name: [],
-          tags: [],
-          actor: [],
-          staff: []
+          type_name: ['占位'],
+          tags: ['占位'],
+          actor: ['占位'],
+          staff: ['占位']
         },
         link: {
-          type_name: [],
-          tags: []
+          type_name: ['占位'],
+          tags: ['占位']
         },
         other: {
-          no_name: []
+          no_name: ['占位']
         }
       },
       is_changed: false,
@@ -131,39 +148,11 @@ export default {
         return
       }
       getOptions(name).then((res) => {
-        this.formData[name] = res.data
-        this.oldFormData[name] = res.data
-      })
-
-      const old_form = this.oldOptionForm
-      if (!old_form) {
-        return
-      }
-      const new_form = this.animeOptionForm
-      this.is_changed = false
-      for (const i in old_form) {
-        if (typeof new_form[i] === 'object') {
-          if (new_form[i].toString() !== old_form[i].toString()) {
-            this.is_changed = true
-            break
-          }
-        } else {
-          if (new_form[i] !== old_form[i]) {
-            this.is_changed = true
-            break
-          }
+        if (res.data) {
+          this.formData[name] = res.data
+          this.oldFormData[name] = res.data
         }
-      }
-
-      // 2.无-跳转-get_Options
-      if (this.is_changed) {
-        this.$message({
-          type: 'warning',
-          message: '修改未保存!'
-        })
-      } else {
-        // todo
-      }
+      })
     }
   }
 }
