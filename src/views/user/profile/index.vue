@@ -8,7 +8,7 @@
         :label="tabLabel[i]"
         :name="i"
       >
-        <el-form :ref="formData[i]" :model="formData[i]" :rules="rules" label-width="80px">
+        <el-form :ref="formData[i]" :model="formData[i]" label-width="80px">
           <el-form-item v-for="j in optionForm[i]" :key="'form_'+j" :label="optionLabel[j]" :prop="j">
             <el-select
               v-model="formData[i][j]"
@@ -28,8 +28,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm('formData[i]')">保存</el-button>
-            <el-button @click="resetForm('formData[i]')">重置</el-button>
+            <el-button type="primary" @click="submitForm()">保存</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -38,6 +37,7 @@
 </template>
 <script>
 import { getOptions } from '@/api/user'
+import { editOptions } from '@/api/user'
 
 export default {
   data() {
@@ -81,6 +81,12 @@ export default {
         'no_name': '无名'
       },
       oldFormData: {},
+      needUpdateOld: {
+        user: true,
+        anime: true,
+        link: true,
+        other: true
+      },
       formData: { // i-j-k
         user: {
           no_name: ['占位']
@@ -99,43 +105,17 @@ export default {
           no_name: ['占位']
         }
       },
-      is_changed: false,
-      rules: {
-        name: [
-          { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { min: 1, max: 6, message: '长度在 1 到 6 个字符', trigger: 'blur' }
-        ]
-      }
+      is_changed: false
     }
   },
-  mounted() {
-
-  },
   methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          (formName) => {
-            // 判断修改项
-            // const res = compareFrom(formName, this.old_anime_form)
-            /* let changes = res.changes
-            if (res.is_changed) {
-
-              const anime = formName
-              editOne(anime, changes).then((res) => {
-                this.$message('修改成功!')
-                changes = []
-              })
-
-            } else {
-              this.$message('未修改内容!')
-            }*/
-          }
-        } else {
-          console.log('error submit!!')
-          return false
-        }
+    submitForm() {
+      const name = this.activeName
+      const options = this.formData[this.activeName]
+      editOptions(name, options).then(() => {
+        this.$message('修改成功!')
       })
+      this.needUpdateOld[name] = true
     },
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -143,16 +123,17 @@ export default {
     handleClick(event) {
       // 注意name规范化
       const name = event.name
-      if (this.oldFormData[name]) {
+      if (this.needUpdateOld[name]) {
+        getOptions(name).then((res) => {
+          if (res.data) {
+            this.formData[name] = res.data
+            this.oldFormData[name] = res.data
+            this.needUpdateOld[name] = false
+          }
+        })
+      } else {
         this.formData[name] = Object.assign({}, this.oldFormData[name])
-        return
       }
-      getOptions(name).then((res) => {
-        if (res.data) {
-          this.formData[name] = res.data
-          this.oldFormData[name] = res.data
-        }
-      })
     }
   }
 }
