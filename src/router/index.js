@@ -167,6 +167,13 @@ export const constantRoutes = [
             component: () => import('@/views/link/sublink/add/index'),
             name: 'link_sublink_add',
             meta: { title: '添加', icon: 'form' }
+          },
+          {
+            path: 'edit/:id',
+            component: () => import('@/views/link/sublink/edit/index'),
+            name: 'sublink_edit',
+            meta: { title: '编辑', icon: 'form' },
+            hidden: true
           }
         ]
       },

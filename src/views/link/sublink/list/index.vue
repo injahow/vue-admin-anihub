@@ -81,7 +81,7 @@ export default {
   methods: {
     handleEdit(row) {
       this.$router.push({
-        name: 'link_edit',
+        name: 'sublink_edit',
         params: { id: row._id }
       })
     },

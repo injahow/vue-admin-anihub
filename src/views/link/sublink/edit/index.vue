@@ -4,6 +4,7 @@
       :link-form="link_form"
       :on-submit="onSubmit"
       :reset-value="resetValue"
+      is-sublink
       :options="options"
       reset-button-show
     />
@@ -14,7 +15,7 @@
 
 import LinkForm from '@/views/link/components/LinkForm'
 
-import { getDetail, editOne } from '@/api/link'
+import { getDetail, editOne } from '@/api/sublink'
 import { getOptions } from '@/api/user'
 
 export default {
@@ -30,7 +31,7 @@ export default {
     }
   },
   mounted() {
-    getOptions('link')
+    getOptions('sublink')
       .then(res => {
         this.options = res.data
       })

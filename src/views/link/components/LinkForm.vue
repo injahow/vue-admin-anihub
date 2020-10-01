@@ -5,14 +5,19 @@
     label-width="50px"
     style="width: 100%"
   >
-    <el-form-item label="链接">
-      <el-input v-model="linkForm.domain" placeholder="请输入地址(含http)" />
-      <el-button v-if="resetButtonShow" @click="resetValue('domain')">重置</el-button>
+    <el-form-item label="域名">
+      <el-input v-model="linkForm.domain" :disabled="isSublink" placeholder="请输入地址(含http)" />
+      <el-button v-if="resetButtonShow && !isSublink" @click="resetValue('domain')">重置</el-button>
     </el-form-item>
 
-    <el-form-item v-if="resetButtonShow" label="图标">
+    <el-form-item v-if="isSublink" label="路径">
+      <el-input v-model="linkForm.link_path" placeholder="请输入路径(不含域名)" />
+      <el-button v-if="resetButtonShow" @click="resetValue('link_path')">重置</el-button>
+    </el-form-item>
+
+    <el-form-item v-if="!isSublink" label="图标">
       <el-input v-model="linkForm.favicon" placeholder="请输入地址(含http)" />
-      <el-button @click="resetValue('favicon')">重置</el-button>
+      <el-button v-if="resetButtonShow" @click="resetValue('favicon')">重置</el-button>
     </el-form-item>
 
     <el-form-item label="类型">
@@ -22,7 +27,7 @@
         style="width: 100%"
       >
         <el-option
-          v-for="item in linkTypeName"
+          v-for="item in options.type_name"
           :key="item"
           :label="item"
           :value="item"
@@ -42,7 +47,7 @@
         placeholder="请选择标签"
       >
         <el-option
-          v-for="item in tagsOptions"
+          v-for="item in options.tags"
           :key="item"
           :label="item"
           :value="item"
@@ -51,14 +56,14 @@
       <el-button v-if="resetButtonShow" @click="resetValue('tags')">重置</el-button>
     </el-form-item>
 
-    <el-form-item label="地区">
+    <el-form-item v-if="!isSublink" label="地区">
       <el-select
         v-model="linkForm.region"
-        placeholder="添加路径链接请留空"
+        placeholder="可留空"
         style="width: 100%"
       >
         <el-option
-          v-for="item in regionOptions"
+          v-for="item in options.region"
           :key="item"
           :label="item"
           :value="item"
@@ -83,18 +88,6 @@ export default {
       type: Object,
       default() { return {} }
     },
-    linkTypeName: {
-      type: Array,
-      default() { return [] }
-    },
-    tagsOptions: {
-      type: Array,
-      default() { return [] }
-    },
-    regionOptions: {
-      type: Array,
-      default() { return [] }
-    },
     onSubmit: {
       type: Function,
       default() { }
@@ -107,6 +100,14 @@ export default {
     resetButtonShow: {
       type: Boolean,
       default: false
+    },
+    isSublink: {
+      type: Boolean,
+      default: false
+    },
+    options: {
+      type: Object,
+      default() { return {} }
     }
   },
   methods: {

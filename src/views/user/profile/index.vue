@@ -46,12 +46,14 @@ export default {
         'user',
         'anime',
         'link',
+        'sublink',
         'other'
       ],
       tabLabel: { // i-2
         'user': '用户',
         'anime': '动漫',
         'link': '链接',
+        'sublink': '子链',
         'other': '其他'
       },
       activeName: 'user', // i-3
@@ -63,9 +65,15 @@ export default {
           'type_name',
           'tags',
           'actor',
-          'staff'
+          'staff',
+          'region'
         ],
         'link': [
+          'type_name',
+          'tags',
+          'region'
+        ],
+        'sublink': [
           'type_name',
           'tags'
         ],
@@ -78,6 +86,7 @@ export default {
         'tags': '标签选项',
         'actor': 'Actor选项',
         'staff': 'Staff选项',
+        'region': '地区选项',
         'no_name': '无名'
       },
       oldFormData: {},
@@ -85,27 +94,33 @@ export default {
         user: true,
         anime: true,
         link: true,
+        sublink: true,
         other: true
       },
       formData: { // i-j-k
         user: {
-          no_name: ['占位']
+          no_name: []
         },
         anime: {
-          type_name: ['占位'],
-          tags: ['占位'],
-          actor: ['占位'],
-          staff: ['占位']
+          type_name: [],
+          tags: [],
+          actor: [],
+          staff: [],
+          region: []
         },
         link: {
-          type_name: ['占位'],
-          tags: ['占位']
+          type_name: [],
+          tags: [],
+          region: []
+        },
+        sublink: {
+          type_name: [],
+          tags: []
         },
         other: {
-          no_name: ['占位']
+          no_name: []
         }
-      },
-      is_changed: false
+      }
     }
   },
   methods: {
