@@ -57,7 +57,7 @@ export const constantRoutes = [
   {
     path: '/user',
     component: Layout,
-    redirect: '/user/profile',
+    redirect: '/user/home',
     name: 'user',
     meta: {
       title: '用户',
@@ -65,9 +65,9 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'admin',
-        component: () => import('@/views/user/admin/index'),
-        name: 'user_admin',
+        path: 'home',
+        component: () => import('@/views/user/home/index'),
+        name: 'user_home',
         meta: { title: '主页', icon: 'dashboard' }
       },
       {

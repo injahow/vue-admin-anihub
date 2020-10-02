@@ -48,33 +48,30 @@
 
 <script>
 import { getList } from '@/api/sublink'
+import { getOptions } from '@/api/user'
 
 export default {
   data() {
     return {
       listLoading: true,
       tableData: [],
-      tags_options: ['其他'],
       tagsFilters: []
     }
   },
 
   mounted() {
     this.listLoading = true
-    getList()
-      .then((res) => {
-        this.tableData = res.data
-        this.listLoading = false
-      })
-      .catch(() => {
-        this.listLoading = false
-      })
-    // todo request tags_options
-    this.tagsFilters = []
-    this.tags_options.forEach((i) => {
-      this.tagsFilters.push({
-        'text': i,
-        'value': i
+    getList().then((res) => {
+      this.tableData = res.data
+      this.listLoading = false
+    })
+    // 获取用户options
+    getOptions('sublink').then(res => {
+      res.data.tags.forEach((i) => {
+        this.tagsFilters.push({
+          'text': i,
+          'value': i
+        })
       })
     })
   },

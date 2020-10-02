@@ -1,9 +1,9 @@
 /**
  * 判断对象是否修改，返回修改项的键
- * @param {object} form
- * @param {object} old_form
+ * @param {Object} form
+ * @param {Object} old_form
  */
-export function compareFrom(form, old_form) {
+export function compareForm(form, old_form) {
   let is_changed = false
   const changes = []
   // 判断修改项
@@ -21,6 +21,7 @@ export function compareFrom(form, old_form) {
       }
     }
   }
+
   return {
     is_changed,
     changes
