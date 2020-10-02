@@ -20,16 +20,16 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="地区">
+      <el-form-item label="标签">
         <el-radio-group
-          v-model="form.region"
+          v-model="form.tags"
           @change="resetData"
         >
           <el-radio-button
-            v-for="region in options.region"
-            :key="region"
-            :label="region"
-            name="region"
+            v-for="tags in options.tags"
+            :key="tags"
+            :label="tags"
+            name="tags"
           />
         </el-radio-group>
       </el-form-item>
@@ -48,19 +48,6 @@
         </el-radio-group>
       </el-form-item>
 
-      <el-form-item label="标签">
-        <el-radio-group
-          v-model="form.tags"
-          @change="resetData"
-        >
-          <el-radio-button
-            v-for="tags in options.tags"
-            :key="tags"
-            :label="tags"
-            name="tags"
-          />
-        </el-radio-group>
-      </el-form-item>
     </el-form>
 
     <el-table
@@ -69,22 +56,19 @@
       width="100%"
       border
     >
-      <el-table-column
-        label="封面"
-        width="130"
-      >
+      <el-table-column prop="domain" label="域名" width="300" sortable>
         <template slot-scope="scope">
-          <el-image
-            :src="scope.row.cover"
-            alt
-            style="width:100px;height:130px;"
-            fit="fit"
-          />
+          <el-link
+            :href="scope.row.domain"
+            type="primary"
+            target="_blank"
+          >{{ scope.row.domain }}</el-link>
         </template>
       </el-table-column>
+
       <el-table-column
-        prop="name"
-        label="名称"
+        prop="type_name"
+        label="类型"
         width="140"
         sortable
       />
@@ -92,30 +76,24 @@
         prop="tags"
         label="标签"
         width="140"
-        :filters="tags_options"
+        :filters="tags_filters"
         :filter-method="filterHandler"
       >
         <template slot-scope="scope">
           <el-tag
             v-for="tag in scope.row.tags"
-            :key="tag.name"
+            :key="tag"
             effect="plain"
           >{{ tag }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="region"
-        label="地区"
-        width="90"
-        sortable
-      />
+
       <el-table-column
         prop="add_date"
         label="时间"
         sortable
-        width="90"
+        width="100"
       />
-
       <el-table-column
         label="操作"
         width="270"
@@ -136,25 +114,25 @@
 </template>
 
 <script>
-import { getIndex } from '@/api/link'
+import { getIndex } from '@/api/sublink'
+import { getOptions } from '@/api/user'
 
 export default {
   data() {
     return {
       form: {
         type_name: '全部',
-        region: '全部',
-        add_date: '全部',
-        tags: '全部'
+        tags: '全部',
+        add_date: '全部'
       },
       indexData: [],
       listLoading: false,
-      tags_options: [],
+      tags_filters: [],
       options: {
-        type_name: ['全部', '休闲娱乐', '论坛社区', '科技工具', '服务托管'],
-        region: ['全部', '中国', '美国', '日本', '其他'],
-        add_date: ['全部', '2020'],
-        tags: ['全部', '青春', '其他']
+        type_name: ['全部'],
+        region: ['全部'],
+        add_date: ['全部', '2021', '2020'],
+        tags: ['全部']
       }
     }
   },
@@ -164,22 +142,34 @@ export default {
       this.indexData = res.data
       this.listLoading = false
     })
-      .catch(() => {
-        this.listLoading = false
+    getOptions('sublink').then(res => {
+      this.options.type_name = ['全部'].concat(res.data.type_name)
+      this.options.tags = ['全部'].concat(res.data.tags)
+      res.data.tags.forEach((i) => {
+        this.tags_filters.push({
+          'text': i,
+          'value': i
+        })
       })
+    })
   },
   methods: {
     resetData() {
       this.indexData = []
       this.listLoading = true
-      // console.log(this.form)
       getIndex(this.form).then(res => {
         this.indexData = res.data
         this.listLoading = false
       })
-        .catch(() => {
-          this.listLoading = false
-        })
+    },
+    handleEdit(row) {
+      this.$router.push({
+        name: 'sublink_edit',
+        params: { id: row._id }
+      })
+    },
+    handleClick(val) {
+      window.location.href = val.domain
     }
   }
 }
