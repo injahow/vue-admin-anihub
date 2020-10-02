@@ -2,6 +2,7 @@
   <div class="app-container">
     <LinkForm
       :link-form="link_form"
+      :options="options"
       :on-submit="onSubmit"
     />
   </div>
@@ -11,6 +12,7 @@
 import LinkForm from '@/views/link/components/LinkForm'
 
 import { addOne } from '@/api/link'
+import { getOptions } from '@/api/user'
 
 export default {
   name: 'LinkAdd',
@@ -19,18 +21,21 @@ export default {
   },
   data() {
     return {
-      link_form: {}
+      link_form: {},
+      options: {}
     }
+  },
+  mounted() {
+    getOptions('link').then(res => {
+      this.options = res.data
+    })
   },
   methods: {
     onSubmit(link) {
-      addOne(link)
-        .then(res => {
-          if (res.code === 200) {
-            this.$message('提交成功!')
-            this.$router.push({ name: 'link_list' })
-          }
-        })
+      addOne(link).then(res => {
+        this.$message('提交成功!')
+        this.$router.push({ name: 'link_list' })
+      })
     }
   }
 }

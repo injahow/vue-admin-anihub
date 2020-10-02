@@ -32,7 +32,7 @@
         style="width: 100%"
       >
         <el-option
-          v-for="item in typeNameOptions"
+          v-for="item in options.type_name"
           :key="item"
           :label="item"
           :value="item"
@@ -52,7 +52,7 @@
         placeholder="请选择标签"
       >
         <el-option
-          v-for="item in tagsOptions"
+          v-for="item in options.tags"
           :key="item"
           :label="item"
           :value="item"
@@ -68,7 +68,7 @@
         style="width: 100%"
       >
         <el-option
-          v-for="item in regionOptions"
+          v-for="item in options.region"
           :key="item"
           :label="item"
           :value="item"
@@ -97,7 +97,7 @@
         style="width: 100%"
       >
         <el-option
-          v-for="item in actorOptions"
+          v-for="item in options.actor"
           :key="item"
           :label="item"
           :value="item"
@@ -117,7 +117,7 @@
         placeholder="请选择"
       >
         <el-option
-          v-for="item in staffOptions"
+          v-for="item in options.staff"
           :key="item"
           :label="item"
           :value="item"
@@ -137,7 +137,7 @@
 </template>
 
 <script>
-
+import { getOptions } from '@/api/user'
 export default {
   name: 'AnimeForm',
   props: {
@@ -145,36 +145,6 @@ export default {
       type: Object,
       default() {
         return {}
-      }
-    },
-    actorOptions: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    staffOptions: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    typeNameOptions: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    tagsOptions: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    regionOptions: {
-      type: Array,
-      default() {
-        return []
       }
     },
     onSubmit: {
@@ -189,6 +159,22 @@ export default {
       type: Function,
       default() {}
     }
+  },
+  data() {
+    return {
+      options: {
+        actor: [],
+        staff: [],
+        type_name: [],
+        tags: [],
+        region: []
+      }
+    }
+  },
+  mounted() {
+    getOptions('anime').then(res => {
+      this.options = res.data
+    })
   },
   methods: {
     onClose() {

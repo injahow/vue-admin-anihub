@@ -105,7 +105,6 @@
     <AnimeTable
       :list-loading="listLoading"
       :table-data="indexData"
-      :tags-options="tags_options"
       :tags-filters="tags_filters"
     />
   </div>
@@ -114,6 +113,7 @@
 <script>
 import AnimeTable from '@/views/anime/components/AnimeTable'
 import { getIndex } from '@/api/anime'
+import { getOptions } from '@/api/user'
 
 export default {
   name: 'AnimeIndex',
@@ -130,23 +130,27 @@ export default {
       },
       indexData: [],
       listLoading: false,
-      tags_options: ['其他'],
       options: {
-        type_name: ['全部', '正片', '电影', '其他'],
-        region: ['全部', '日本', '中国'],
+        type_name: ['全部'],
+        region: ['全部'],
         publish: ['全部', '2020', '2019', '2018', '2017', '2016', '2015'],
-        tags: ['全部', '青春', '科幻', '悬疑', '恐怖']
+        tags: ['全部']
       }
     }
   },
   mounted() {
     this.resetData()
-    // todo request tags_options
-    this.tags_filters = []
-    this.tags_options.forEach((i) => {
-      this.tags_filters.push({
-        'text': i,
-        'value': i
+    getOptions('anime').then(res => {
+      this.options.type_name = ['全部'].concat(res.data.type_name)
+      this.options.region = ['全部'].concat(res.data.region)
+      this.options.tags = ['全部'].concat(res.data.tags)
+
+      this.tags_filters = []
+      res.data.tags.forEach((i) => {
+        this.tags_filters.push({
+          'text': i,
+          'value': i
+        })
       })
     })
   },

@@ -92,6 +92,10 @@ export default {
       type: Function,
       default() { }
     },
+    options: {
+      type: Object,
+      default() { return {} }
+    },
     resetValue:
     {
       type: Function,
@@ -104,10 +108,6 @@ export default {
     isSublink: {
       type: Boolean,
       default: false
-    },
-    options: {
-      type: Object,
-      default() { return {} }
     }
   },
   methods: {

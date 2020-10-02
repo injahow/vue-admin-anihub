@@ -2,11 +2,6 @@
   <div class="app-container">
     <AnimeForm
       :anime-form="anime_form"
-      :actor-options="actor_options"
-      :staff-options="staff_options"
-      :tags-options="tags_options"
-      :type-name-options="type_name_options"
-      :region-options="region_options"
       :on-submit="onSubmit"
       :reset-value="resetValue"
       reset-button-show
@@ -17,7 +12,7 @@
 <script>
 import AnimeForm from '@/views/anime/components/AnimeForm'
 import { getDetail, editOne } from '@/api/anime'
-import { compareFrom } from '@/utils/put-changes'
+import { compareForm } from '@/utils/put-changes'
 
 export default {
   name: 'AnimeEdit',
@@ -35,7 +30,7 @@ export default {
       type_name_options: ['正片', '电影', '其他'],
       onSubmit: (formName) => {
         // 判断修改项
-        const res = compareFrom(formName, this.old_anime_form)
+        const res = compareForm(formName, this.old_anime_form)
         let changes = res.changes
         if (res.is_changed) {
           const anime = formName

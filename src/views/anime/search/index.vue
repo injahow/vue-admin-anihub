@@ -94,6 +94,7 @@
 
 <script>
 import { search } from '@/api/anime'
+import { getOptions } from '@/api/user'
 
 export default {
   data() {
@@ -101,17 +102,17 @@ export default {
       name: '',
       tableData: [],
       listLoading: false,
-      tags_options: ['其他'],
       tags_filters: []
     }
   },
   mounted() {
-    // todo request tags_options
-    this.tags_filters = []
-    this.tags_options.forEach((i) => {
-      this.tags_filters.push({
-        'text': i,
-        'value': i
+    // 获取用户options
+    getOptions('anime').then(res => {
+      res.data.tags.forEach((i) => {
+        this.tags_filters.push({
+          'text': i,
+          'value': i
+        })
       })
     })
   },
@@ -119,14 +120,10 @@ export default {
     searchForm() {
       this.tableData = []
       this.listLoading = true
-      // console.log(this.form)
       search(this.name).then(res => {
         this.tableData = res.data
         this.listLoading = false
       })
-        .catch(() => {
-          this.listLoading = false
-        })
     },
     // 代码冗余 - 同list .......
     handleEdit(index, row) {
