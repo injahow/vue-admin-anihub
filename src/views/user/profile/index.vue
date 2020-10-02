@@ -142,7 +142,7 @@ export default {
         getOptions(name).then((res) => {
           if (res.data) {
             this.formData[name] = res.data
-            this.oldFormData[name] = res.data
+            this.oldFormData[name] = Object.assign({}, res.data)
             this.needUpdateOld[name] = false
           }
         })
