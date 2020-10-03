@@ -1,7 +1,7 @@
 {
   "name": "vue-admin-anihub",
   "version": "1.0.0",
-  "description": "AnimeHub's admin interface",
+  "description": "AniHub's admin interface",
   "author": "injahow <i@injahow.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
