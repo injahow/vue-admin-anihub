@@ -3,7 +3,7 @@
     <div class="dashboard-text">name: {{ name }}</div>
     <div style="color:#FF0000">
       <p>注意：开发阶段，请不要上传过多测试数据。</p>
-      <p>Note: During development, do not upload too much test data.</p>
+      <p>Note: During development, not upload too much data for testing.</p>
     </div>
   </div>
 </template>
