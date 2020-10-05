@@ -61,20 +61,20 @@ export const constantRoutes = [
     name: 'user',
     meta: {
       title: '用户',
-      icon: 'dashboard'
+      icon: 'el-icon-user'
     },
     children: [
       {
         path: 'home',
         component: () => import('@/views/user/home/index'),
         name: 'user_home',
-        meta: { title: '主页', icon: 'dashboard' }
+        meta: { title: '主页', icon: 'el-icon-s-home' }
       },
       {
         path: 'profile',
         component: () => import('@/views/user/profile/index'),
         name: 'user_profile',
-        meta: { title: '配置', icon: 'dashboard' }
+        meta: { title: '配置', icon: 'el-icon-setting' }
       }
     ]
   },
@@ -85,7 +85,7 @@ export const constantRoutes = [
     name: 'anime',
     meta: {
       title: '动漫',
-      icon: 'dashboard'
+      icon: 'el-icon-star-on'
     },
     children: [
       {
@@ -160,7 +160,7 @@ export const constantRoutes = [
             path: 'index',
             component: () => import('@/views/link/sublink/index/index'),
             name: 'link_sublink_index',
-            meta: { title: '引索', icon: 'form' }
+            meta: { title: '引索', icon: 'table' }
           },
           {
             path: 'add',

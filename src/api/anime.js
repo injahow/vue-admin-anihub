@@ -32,10 +32,15 @@ export function addOne(anime) {
 }
 
 export function addOneByUrl(_url) {
-  // hostname may be wrong !!!
-  const hostname = url.parse(_url).hostname.split('.').reverse()[1]
+  // _url may be wrong
+  const hostname = url.parse(_url).hostname
+  if (!hostname) {
+    return Promise.reject({ error: 'Url Error' })
+  }
+  // ! site_name may be wrong
+  const site_name = hostname.split('.').reverse()[1]
   return request({
-    url: `/${hostname}/anime`,
+    url: `/${site_name}/anime`,
     method: 'get',
     params: { url: _url }
   })
