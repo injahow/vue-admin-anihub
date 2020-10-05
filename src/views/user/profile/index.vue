@@ -152,6 +152,7 @@ export default {
   methods: {
     submitForm() {
       const name = this.activeName
+      if (name === 'other') return // 占位
       const options = this.formData[this.activeName]
       editOptions(name, options).then(() => {
         this.$message('修改成功!')
