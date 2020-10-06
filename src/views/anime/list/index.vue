@@ -30,6 +30,8 @@ export default {
     getList().then(res => {
       this.tableData = res.data
       this.listLoading = false
+    }).catch(() => {
+      this.listLoading = false
     })
     // 获取用户options
     getOptions('anime').then(res => {
