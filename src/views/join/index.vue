@@ -3,18 +3,32 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">Join Form</h3>
       </div>
-
       <el-form-item prop="email">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="email" />
         </span>
         <el-input
           ref="email"
           v-model="loginForm.email"
-          placeholder="Username"
+          placeholder="Email"
           name="email"
+          type="text"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
+      <el-form-item prop="name">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input
+          ref="name"
+          v-model="loginForm.name"
+          placeholder="Username"
+          name="name"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -34,21 +48,34 @@
           name="password"
           tabindex="2"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
+          @keyup.enter.native="handleJoin"
         />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-      <br>
-      <el-button style="width:100%;margin-bottom:30px;" @click="join">Join</el-button>
+      <el-form-item prop="password2">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="password2"
+          v-model="loginForm.password2"
+          :type="passwordType"
+          placeholder="Password2"
+          name="password2"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="handleJoin"
+        />
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+        </span>
+      </el-form-item>
 
-      <div class="tips">
-        <span style="margin-right:20px;">email: test@test.com</span>
-        <span> password: 11111111</span>
-      </div>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleJoin">Login</el-button>
 
     </el-form>
   </div>
@@ -56,6 +83,7 @@
 
 <script>
 import { validEmail } from '@/utils/validate'
+import { join } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -76,8 +104,10 @@ export default {
     }
     return {
       loginForm: {
-        email: 'test@test.com',
-        password: '11111111'
+        email: '',
+        name: '',
+        password: '',
+        password2: ''
       },
       loginRules: {
         email: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -107,12 +137,12 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+    handleJoin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
+          join(this.loginForm).then(() => {
+            this.$router.push({ path: '/login' })
             this.loading = false
           }).catch(() => {
             this.loading = false
@@ -122,9 +152,6 @@ export default {
           return false
         }
       })
-    },
-    join() {
-      this.$router.push({ path: '/join' })
     }
   }
 }

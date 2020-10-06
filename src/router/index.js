@@ -38,6 +38,11 @@ export const constantRoutes = [
   },
 
   {
+    path: '/join',
+    component: () => import('@/views/join/index'),
+    hidden: true
+  },
+  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -148,6 +153,7 @@ export const constantRoutes = [
         path: 'sublink',
         component: () => import('@/views/link/sublink/index'), // Parent router-view
         name: 'link_sublink',
+        redirect: '/link/sublink/list',
         meta: { title: '子链', icon: 'el-icon-link' },
         children: [
           {

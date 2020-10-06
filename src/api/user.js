@@ -8,6 +8,13 @@ export function login(data) {
     data
   })
 }
+export function join(data) {
+  return request({
+    url: '/api/user/join',
+    method: 'post',
+    data
+  })
+}
 
 export function getInfo(token) {
   return request({
