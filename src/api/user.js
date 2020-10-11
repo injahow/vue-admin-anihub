@@ -16,13 +16,15 @@ export function join(data) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo(_token) {
+  const token = _token || store.getters.token
   return request({
     url: '/api/user/info',
     method: 'get',
     params: { token }
   })
 }
+
 /**
  * 获取用户选项配置
  * @param {String} name

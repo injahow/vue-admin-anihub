@@ -146,7 +146,8 @@ export default {
         }
       }
     }
-  }, mounted() {
+  },
+  mounted() {
     this.handleClick({ name: 'user' })
   },
   methods: {
